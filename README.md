@@ -64,7 +64,7 @@ A Django-based web application that generates manga stories and visual panels us
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/ai-manga-creator.git
+git clone https://github.com/vignesh19032005/ai-manga-creator.git
 cd ai-manga-creator
 
 # Set up virtual environment
