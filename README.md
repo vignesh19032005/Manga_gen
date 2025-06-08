@@ -205,12 +205,6 @@ Licensed under the [MIT License](LICENSE).
 
 ---
 
-## 👥 Authors
-
-* **\[Your Name]** – Initial development and design
-
----
-
 ## 🙏 Acknowledgments
 
 * [Google Gemini AI](https://ai.google.dev/)
