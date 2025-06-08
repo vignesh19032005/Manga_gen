@@ -1,0 +1,28 @@
+{% extends 'manga_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Manga Gallery</h1>
+            <p class="lead text-muted">Browse through AI-generated manga creations</p>
+        </div>
+
+        <div class="row g-4" id="galleryGrid">
+            <!-- Placeholder for generated manga -->
+            <div class="col-md-6 col-lg-4">
+                <div class="anime-card h-100">
+                    <div class="p-3 text-center">
+                        <i class="fas fa-images fa-4x text-muted mb-3"></i>
+                        <h5>Your generated manga will appear here</h5>
+                        <p class="text-muted">Create your first manga to start building your collection!</p>
+                        <a href="{% url 'manga_app:index' %}" class="btn btn-custom">
+                            <i class="fas fa-plus me-2"></i>Create New Manga
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

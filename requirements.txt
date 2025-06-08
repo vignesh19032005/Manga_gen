@@ -1,0 +1,11 @@
+django==5.0.1
+google-generativeai==0.8.3
+pillow==10.2.0
+python-dotenv==1.0.1
+stability-sdk==0.8.5
+requests==2.31.0
+torch==2.1.2
+torchvision==0.16.2
+transformers==4.36.2
+diffusers==0.25.0
+accelerate==0.25.0

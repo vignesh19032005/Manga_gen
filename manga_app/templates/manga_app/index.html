@@ -1,0 +1,319 @@
+{% extends 'manga_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Create Your Own Manga Story</h1>
+            <p class="lead text-muted">Transform your ideas into stunning manga artwork using AI</p>
+        </div>
+
+        <div class="anime-card p-4 mb-5">
+            <form id="mangaGeneratorForm" method="post">
+                {% csrf_token %}
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-theater-masks me-2"></i>Select Your Genre
+                            </label>
+                            <select class="form-select" name="genre" required>
+                                <option value="">Choose a genre...</option>
+                                <option value="action">Action/Adventure</option>
+                                <option value="romance">Romance</option>
+                                <option value="fantasy">Fantasy</option>
+                                <option value="scifi">Sci-Fi</option>
+                                <option value="mystery">Mystery</option>
+                                <option value="comedy">Comedy</option>
+                                <option value="drama">Drama</option>
+                                <option value="supernatural">Supernatural</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-paint-brush me-2"></i>Art Style
+                            </label>
+                            <select class="form-select" name="art_style" required>
+                                <option value="">Choose an art style...</option>
+                                <option value="anime">Classic Anime</option>
+                                <option value="modern">Modern Manga</option>
+                                <option value="western">Western Comics</option>
+                                <option value="chibi">Chibi Style</option>
+                                <option value="realistic">Semi-Realistic</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-book me-2"></i>Story Length
+                            </label>
+                            <select class="form-select" name="length" required>
+                                <option value="">Choose length...</option>
+                                <option value="short">Short (1 chapter)</option>
+                                <option value="medium">Medium (2-3 chapters)</option>
+                                <option value="long">Long (4-5 chapters)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-users me-2"></i>Target Audience
+                            </label>
+                            <select class="form-select" name="audience" required>
+                                <option value="">Choose audience...</option>
+                                <option value="children">Children</option>
+                                <option value="teens">Teenagers</option>
+                                <option value="youngAdult">Young Adult</option>
+                                <option value="adult">Adult</option>
+                                <option value="all">All Ages</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-lightbulb me-2"></i>Basic Premise
+                    </label>
+                    <textarea class="form-control" name="premise" rows="3" placeholder="Describe your story idea..." required></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-tags me-2"></i>Story Elements
+                    </label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="elements" value="action">
+                            <label class="form-check-label">Action</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="elements" value="romance">
+                            <label class="form-check-label">Romance</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="elements" value="mystery">
+                            <label class="form-check-label">Mystery</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="elements" value="comedy">
+                            <label class="form-check-label">Comedy</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="elements" value="drama">
+                            <label class="form-check-label">Drama</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-magic me-2"></i>Generate Manga
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <style>
+            /* Add these styles to your existing CSS */
+            .loading-container {
+                display: none;
+                text-align: center;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .loading-spinner {
+                width: 50px;
+                height: 50px;
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto;
+            }
+
+            .loading-text {
+                margin-top: 10px;
+                color: #3498db;
+                font-weight: bold;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .story-container {
+                margin-top: 30px;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .story-text {
+                white-space: pre-line;
+                line-height: 1.6;
+                font-size: 1.1em;
+                color: #333;
+            }
+
+            .scenes-container {
+                margin-top: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+                padding: 20px 0;
+            }
+
+            .scene-card {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .scene-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+
+            .scene-title {
+                color: #2c3e50;
+                margin-bottom: 12px;
+                font-weight: bold;
+                font-size: 1.1em;
+                border-bottom: 2px solid #3498db;
+                padding-bottom: 8px;
+            }
+
+            .scene-description {
+                color: #34495e;
+                line-height: 1.6;
+                font-size: 0.95em;
+            }
+
+            .scenes-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .scene-count {
+                color: #666;
+                font-size: 0.9em;
+            }
+        </style>
+
+        <div class="loading-container" id="loadingAnimation">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Generating your manga story...</div>
+        </div>
+
+        <div id="storyResult"></div>
+
+        <!-- Error Display -->
+        <div id="errorContainer" class="alert alert-danger d-none" role="alert">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('#mangaGeneratorForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading animation
+        $('.loading-container').show();
+        $('#storyResult').hide();
+        
+        // Get form data
+        const formData = {
+            genre: $('select[name="genre"]').val(),
+            length: $('select[name="length"]').val(),
+            audience: $('select[name="audience"]').val(),
+            premise: $('textarea[name="premise"]').val(),
+            elements: []
+        };
+        
+        // Get selected elements
+        $('input[name="elements"]:checked').each(function() {
+            formData.elements.push($(this).val());
+        });
+        
+        // Send AJAX request
+        $.ajax({
+            url: '/generate/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                $('.loading-container').hide();
+                
+                if (response.success) {
+                    // Store scenes in sessionStorage for panel generation
+                    sessionStorage.setItem('generatedScenes', JSON.stringify(response.scenes));
+                    
+                    // Display the story
+                    const storyHtml = `
+                        <div class="story-container">
+                            <h3 class="mb-4">Your Generated Story</h3>
+                            <div class="story-text mb-4">${response.story}</div>
+                            
+                            <h4 class="mb-3">Key Scenes</h4>
+                            <div class="scenes-container">
+                                ${response.scenes.map((scene, index) => `
+                                    <div class="scene-card">
+                                        <div class="scene-title">Scene ${index + 1}</div>
+                                        <div class="scene-description">${scene}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <a href="/panels/" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paint-brush me-2"></i>Generate Manga Panels
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    $('#storyResult').html(storyHtml).show();
+                    
+                    // Smooth scroll to results
+                    $('html, body').animate({
+                        scrollTop: $('#storyResult').offset().top - 50
+                    }, 1000);
+                } else {
+                    showError(response.error || 'An error occurred while generating the story.');
+                }
+            },
+            error: function(xhr, status, error) {
+                $('.loading-container').hide();
+                showError('An error occurred while generating the story. Please try again.');
+                console.error('Error:', error);
+            }
+        });
+    });
+    
+    function showError(message) {
+        const errorHtml = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        $('#storyResult').html(errorHtml).show();
+    }
+});
+</script>
+{% endblock %}

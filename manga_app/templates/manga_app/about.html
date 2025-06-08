@@ -1,0 +1,100 @@
+{% extends 'manga_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">About AI Manga Creator</h1>
+            <p class="lead text-muted">Transforming your ideas into stunning manga artwork</p>
+        </div>
+
+        <div class="anime-card p-4 mb-4">
+            <h3 class="mb-4"><i class="fas fa-magic me-2"></i>How It Works</h3>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-lightbulb fa-3x text-primary mb-3"></i>
+                        <h5>1. Share Your Vision</h5>
+                        <p>Tell us about your story idea, preferred genre, and artistic style</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                        <h5>2. AI Magic</h5>
+                        <p>Our AI system processes your input to create a unique manga story</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-book-open fa-3x text-primary mb-3"></i>
+                        <h5>3. Your Manga</h5>
+                        <p>Receive your personalized manga creation ready to read and share</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="anime-card p-4 mb-4">
+            <h3 class="mb-4"><i class="fas fa-cogs me-2"></i>Technology</h3>
+            <p>AI Manga Creator uses cutting-edge artificial intelligence technologies:</p>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    <i class="fas fa-brain me-2 text-primary"></i>
+                    <strong>Story Generation:</strong> Advanced language models create engaging narratives
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-paint-brush me-2 text-primary"></i>
+                    <strong>Art Generation:</strong> State-of-the-art GANs transform stories into manga artwork
+                </li>
+                <li class="mb-3">
+                    <i class="fas fa-code me-2 text-primary"></i>
+                    <strong>Web Platform:</strong> Built with Django for a smooth user experience
+                </li>
+            </ul>
+        </div>
+
+        <div class="anime-card p-4">
+            <h3 class="mb-4"><i class="fas fa-question-circle me-2"></i>FAQ</h3>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How long does it take to generate a manga?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Generation time varies based on the complexity and length of your story, typically taking 2-5 minutes.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Can I edit the generated manga?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Currently, the system generates complete manga pages. Editing features will be added in future updates.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What art styles are available?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We offer various styles including classic anime, modern manga, western comics, chibi, and semi-realistic.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

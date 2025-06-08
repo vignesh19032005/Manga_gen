@@ -1,0 +1,153 @@
+{% extends 'manga_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Manga Panel Generation</h2>
+            
+            <!-- Art Style Selection -->
+            <div class="mb-4">
+                <label for="artStyle" class="form-label">Art Style</label>
+                <select class="form-select" id="artStyle">
+                    <option value="modern manga">Modern Manga</option>
+                    <option value="classic manga">Classic Manga</option>
+                    <option value="shoujo manga">Shoujo Manga</option>
+                    <option value="seinen manga">Seinen Manga</option>
+                    <option value="action manga">Action Manga</option>
+                </select>
+            </div>
+
+            <!-- Scene Display and Generation -->
+            <div id="sceneContainer" class="mb-4">
+                <h3>Story Scenes</h3>
+                <div id="sceneList" class="list-group mb-3">
+                    <!-- Scenes will be populated here -->
+                </div>
+            </div>
+
+            <!-- Generate Panels Button -->
+            <button id="generatePanels" class="btn btn-primary mb-4" disabled>
+                Generate Manga Panels
+            </button>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center d-none">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Generating manga panels...</p>
+            </div>
+
+            <!-- Generated Panels Display -->
+            <div id="panelsContainer" class="row g-4">
+                <!-- Panels will be displayed here -->
+            </div>
+
+            <!-- Error Alert -->
+            <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Panel Template -->
+<template id="panelTemplate">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <img src="" class="card-img-top panel-image" alt="Manga Panel">
+            <div class="card-body">
+                <p class="card-text scene-description"></p>
+            </div>
+        </div>
+    </div>
+</template>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sceneList = document.getElementById('sceneList');
+    const generateBtn = document.getElementById('generatePanels');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const panelsContainer = document.getElementById('panelsContainer');
+    const errorAlert = document.getElementById('errorAlert');
+    const artStyleSelect = document.getElementById('artStyle');
+
+    // Check if there are scenes in sessionStorage
+    const scenes = JSON.parse(sessionStorage.getItem('generatedScenes') || '[]');
+    if (scenes.length > 0) {
+        scenes.forEach(scene => {
+            const div = document.createElement('div');
+            div.className = 'list-group-item';
+            div.textContent = scene;
+            sceneList.appendChild(div);
+        });
+        generateBtn.disabled = false;
+    } else {
+        sceneList.innerHTML = '<div class="list-group-item text-muted">No scenes generated yet. Please generate a story first.</div>';
+    }
+
+    generateBtn.addEventListener('click', async function() {
+        try {
+            errorAlert.classList.add('d-none');
+            loadingSpinner.classList.remove('d-none');
+            generateBtn.disabled = true;
+            panelsContainer.innerHTML = '';
+
+            const response = await fetch('/generate_panels/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    scenes: scenes,
+                    art_style: artStyleSelect.value
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to generate panels');
+            }
+
+            // Display panels
+            const template = document.getElementById('panelTemplate');
+            data.panels.forEach(panel => {
+                const clone = template.content.cloneNode(true);
+                
+                const img = clone.querySelector('.panel-image');
+                const description = clone.querySelector('.scene-description');
+                
+                if (panel.image_url) {
+                    img.src = panel.image_url;
+                } else {
+                    img.src = "{% static 'manga_app/images/placeholder.png' %}";
+                }
+                
+                description.textContent = panel.scene;
+                
+                if (panel.message) {
+                    const message = document.createElement('p');
+                    message.className = 'text-muted mt-2';
+                    message.textContent = panel.message;
+                    clone.querySelector('.card-body').appendChild(message);
+                }
+                
+                panelsContainer.appendChild(clone);
+            });
+
+        } catch (error) {
+            errorAlert.textContent = error.message;
+            errorAlert.classList.remove('d-none');
+        } finally {
+            loadingSpinner.classList.add('d-none');
+            generateBtn.disabled = false;
+        }
+    });
+});
+</script>
+{% endblock %}
